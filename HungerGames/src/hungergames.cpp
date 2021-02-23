@@ -11,6 +11,12 @@ int randNum(int lower, int upper) {
 	return distr(gen);
 }
 
+void clear_cin() {
+	//Fixes bug that creates a never ending loop when a non-int is entered.
+	std::cin.clear();
+	std::cin.ignore(100, '\n');
+}
+
 Game::Game() 
 	: time(0), day(1), option_tribute_list("Realistic Random"), option_sim_type("Realistic")
 {	
@@ -68,31 +74,44 @@ void Game::set_day(int new_day)
 	Game::day = new_day;
 }
 
+//Creates a list of events
 void Game::set_events() {
 	Event event(1, "Alive", "{Tribute1} ran to the cornucopia and grabbed a bow and arrow.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Death", "{Tribute1} stepped off the pedestal too early.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} found a spear in the cornucopia.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} fled into the woods.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(2, "Death", "{Tribute1} got stabbed by {Tribute2} and died.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} grabbed a backpack full of supplies.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} narrowly avoided a bow shot.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} ran away from the cornucopia.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} blew up.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(2, "Death", "{Tribute1} was beaten to dead by {Tribute2}.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} found a sword at the cornucopia.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(1, "Alive", "{Tribute1} found a backpack full of food.", "Cornucopia");
 	Game::event_list.emplace_back(event);
+
 	event.change_event(2, "Death", "{Tribute1} was shot with arrow by {Tribute2}", "Normal");
 	Game::event_list.emplace_back(event);
 }
@@ -121,8 +140,7 @@ void Game::start_game()
 		else {
 			system("cls");
 			std::cout << "<<====== Invalid Command ======>>" << std::endl;
-			std::cin.clear();
-			std::cin.ignore(100, '\n');
+			clear_cin();
 		}
 	}
 }
@@ -158,8 +176,7 @@ void Game::CreateGame()
 		else {
 			system("cls");
 			std::cout << "<<====== Invalid Command ======>>" << std::endl;
-			std::cin.clear();
-			std::cin.ignore(100, '\n');
+			clear_cin();
 		}
 	}
 }
@@ -189,8 +206,7 @@ void Game::SimTypeOption()
 	else {
 		system("cls");
 		std::cout << "<<====== Invalid Command ======>>" << std::endl;
-		std::cin.clear();
-		std::cin.ignore(100, '\n');
+		clear_cin();
 	}
 }
 
@@ -222,8 +238,7 @@ void Game::TributeCreationOption()
 	else {
 		system("cls");
 		std::cout << "<<====== Invalid Command ======>>" << std::endl;
-		std::cin.clear();
-		std::cin.ignore(100, '\n');
+		clear_cin();
 	}
 }
 
@@ -232,4 +247,3 @@ void Game::sim_day()
 {
 	std::cout << "Welcome to the Hunger Games! May the odds be ever in your favor." << std::endl;
 }
-
