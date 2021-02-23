@@ -151,11 +151,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\hungergames.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\tributes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\event.h" />
     <ClInclude Include="headers\hungergames.h" />
     <ClInclude Include="headers\tributes.h" />
   </ItemGroup>

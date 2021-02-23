@@ -24,12 +24,18 @@
     <ClCompile Include="src\tributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\hungergames.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\tributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

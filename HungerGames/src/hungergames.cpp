@@ -25,7 +25,8 @@ Game::Game()
 		Tribute tribute("Rose Merryweather", "Female", "Alive", i + 13, i + 1, randNum(12, 18), randNum(56, 72), randNum(80, 200), 0, 100);
 		Game::tribute_list.emplace_back(tribute);
 	}
-
+	//Creates list of events
+	set_events();
 	//Calls the start_game function.
 	start_game();
 }
@@ -52,6 +53,11 @@ int Game::get_day()
 	return Game::day;
 }
 
+std::vector<Event> Game::get_event_list()
+{
+	return Game::event_list;
+}
+
 void Game::set_time(int new_time)
 {
 	Game::time = new_time;
@@ -60,6 +66,35 @@ void Game::set_time(int new_time)
 void Game::set_day(int new_day)
 {
 	Game::day = new_day;
+}
+
+void Game::set_events() {
+	Event event(1, "Alive", "{Tribute1} ran to the cornucopia and grabbed a bow and arrow.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Death", "{Tribute1} stepped off the pedestal too early.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} found a spear in the cornucopia.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} fled into the woods.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(2, "Death", "{Tribute1} got stabbed by {Tribute2} and died.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} grabbed a backpack full of supplies.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} narrowly avoided a bow shot.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} ran away from the cornucopia.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} blew up.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(2, "Death", "{Tribute1} was beaten to dead by {Tribute2}.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} found a sword at the cornucopia.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(1, "Alive", "{Tribute1} found a backpack full of food.", "Cornucopia");
+	Game::event_list.emplace_back(event);
+	event.change_event(2, "Death", "{Tribute1} was shot with arrow by {Tribute2}", "Normal");
+	Game::event_list.emplace_back(event);
 }
 
 //Displays a text menu and gets user command input
@@ -197,3 +232,4 @@ void Game::sim_day()
 {
 	std::cout << "Welcome to the Hunger Games! May the odds be ever in your favor." << std::endl;
 }
+
