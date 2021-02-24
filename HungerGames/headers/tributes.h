@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+std::string inch_to_feet(int inches);
+
 class Tribute {
 private:
 	std::string name, gender, status;

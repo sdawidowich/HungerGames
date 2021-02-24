@@ -21,6 +21,8 @@ public:
 	void set_day(int new_day);
 	void set_events();
 	void start_game();
+	void create_tribute_list();
+	void view_tribute_list();
 	void CreateGame();
 	void SimTypeOption();
 	void TributeCreationOption();
