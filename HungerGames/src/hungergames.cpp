@@ -1,6 +1,10 @@
 #include <iostream>
 #include <random>
+#include <fstream>
+#include <filesystem>
 #include "hungergames.h"
+
+namespace fs = std::filesystem;
 
 int randNum(int lower, int upper) {
 	std::random_device rd; // obtain a random number from hardware
@@ -107,7 +111,7 @@ void Game::start_game() {
 	while (true) {
 		int command;
 		std::cout << "<<========== Menu ==========>>" << std::endl;
-		std::cout << "1. Create Game\n2. Load Game\n3. Quit\n" << std::endl;
+		std::cout << "1. Create Game\n2. Create/Edit Tribute Roster\n3. Quit\n" << std::endl;
 		std::cout << ">> ";
 		std::cin >> command;
 		system("cls");
@@ -115,7 +119,7 @@ void Game::start_game() {
 			CreateGame();
 		}
 		else if (command == 2) {
-			std::cout << "<<======= Load Game =======>>" << std::endl;
+			custom_tribute_list();
 		}
 		else if (command == 3) {
 			std::cout << "<<======= Quitting Game... =======>>\n" << std::endl;
@@ -124,6 +128,81 @@ void Game::start_game() {
 		else {
 			invalid_command();
 		}
+	}
+}
+
+void Game::custom_tribute_list() {
+	std::cout << "<<======= Create/Edit Tribute Roster =======>>" << std::endl;
+	std::cout << "<<== Options ==>>" << std::endl;
+	std::cout << "1. Create New Custom Tribute Roster\n2. Edit Existing Custom Tribute Roster\n3. Cancel" << std::endl;
+	std::cout << "Type the option number you would like to choose or enter 3 to cancel." << std::endl;
+	std::cout << ">> ";
+	int option;
+	
+	std::cin >> option;
+	if (option == 1) {
+		system("cls");
+
+		std::string roster_name;
+		while (true) {
+			//First checks to see if the roster name exists, then if it doesn't, it makes a new file with that name.
+			std::cout << "<<======= Create/Edit Tribute Roster =======>>" << std::endl;
+			std::cout << "What would you like to name this new tribute roster?" << std::endl;
+			std::cout << ">> ";
+			std::cin.ignore();
+			getline(std::cin, roster_name);
+
+			bool existing_roster = false;
+			//Checks if file already exists
+			std::string path = "rosters";
+			for (const auto& entry : fs::directory_iterator(path)) {
+				std::string existing_roster_name = entry.path().u8string();
+				//erases first 8 letters, which is the 'rosters/' part of the directory
+				existing_roster_name.erase(0, 8);
+				//erases the final 5 letters, which is the '.json' part of the directory
+				existing_roster_name.erase(existing_roster_name.length() - 5, existing_roster_name.length());
+				if (roster_name == existing_roster_name) {
+					system("cls");
+					std::cout << "A roster already exists with that name!\n" << std::endl;
+					existing_roster = true;
+				}
+			}
+			if (!existing_roster) {
+				std::ofstream outfile("rosters/" + roster_name + ".json");
+				outfile.close();
+				break;
+			}
+		}
+	}
+	else if (option == 2) {
+		system("cls");
+		std::cout << "<<=== Rosters ===>>\n" << std::endl;
+
+		//Find the existing roster files in the rosters/ directory
+		std::string path = "rosters";
+		std::vector<std::string> roster_list;
+		int roster_num = 1;
+		for (const auto& entry : fs::directory_iterator(path)) {
+			std::string roster_name = entry.path().u8string();
+			//erases first 8 letters, which is the 'rosters/' part of the directory
+			roster_name.erase(0, 8);
+			//erases the final 5 letters, which is the '.json' part of the directory
+			roster_name.erase(roster_name.length()-5, roster_name.length());
+			std::cout << roster_num << ". " << roster_name << std::endl;
+			roster_list.push_back(roster_name);
+			roster_num++;
+		}
+		std::cout << "\nWhich roster would you like to edit?" << std::endl;
+		std::cout << ">> ";
+		int roster_choice;
+		std::cin >> roster_choice;
+		std::cout << roster_list[roster_choice - 1] << std::endl;
+	}
+	else if (option == 3) {
+		invalid_command();
+	}
+	else {
+
 	}
 }
 
@@ -441,23 +520,25 @@ void Game::SimTypeOption() {
 	std::cout << ">> ";
 	int option_edit;
 	std::cin >> option_edit;
-	if (option_edit == 1) {
+	switch (option_edit) {
+	case 1:
 		system("cls");
 		Game::option_sim_type = "Realistic";
 		std::cout << "<<== Set Simulation Type to Realistic ==>>\n" << std::endl;
-	}
-	else if (option_edit == 2) {
+		break;
+	case 2:
 		system("cls");
 		Game::option_sim_type = "Random";
 		std::cout << "<<== Set Simulation Type to Random ==>>\n" << std::endl;
-	}
-	else if (option_edit == 3) {
+		break;
+	case 3:
 		system("cls");
 		Game::option_sim_type = "Chaotic Random";
 		std::cout << "<<== Set Simulation Type to Chaotic Random ==>>\n" << std::endl;
-	}
-	else {
+		break;
+	default:
 		invalid_command();
+		break;
 	}
 }
 
@@ -467,26 +548,28 @@ void Game::TributeCreationOption() {
 	std::cout << ">> ";
 	int option_edit;
 	std::cin >> option_edit;
-	if (option_edit == 1) {
+	switch (option_edit) {
+	case 1:
 		system("cls");
 		Game::option_tribute_list = "Realistic Random";
 		std::cout << "<<== Set Tribute List Creation to Realistic Random ==>>\n" << std::endl;
-	}
-	else if (option_edit == 2) {
+		break;
+	case 2:
 		system("cls");
 		Game::option_tribute_list = "Chaotic Random";
 		std::cout << "<<== Set Tribute List Creation to Chaotic Random ==>>\n" << std::endl;
-	}
-	else if (option_edit == 3) {
+		break;
+	case 3:
 		std::cout << "Select the Tribute Roster you would like to use." << std::endl;
 		int roster_selection;
 		std::cin >> roster_selection;
 		system("cls");
 		Game::option_tribute_list = "Custom";
 		std::cout << "<<== Set Tribute List Creation to Custom ==>>\n" << std::endl;
-	}
-	else {
+		break;
+	default:
 		invalid_command();
+		break;
 	}
 }
 
