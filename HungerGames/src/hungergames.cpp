@@ -144,12 +144,17 @@ void Game::custom_tribute_list() {
 		system("cls");
 
 		std::string roster_name;
+		int attempt = 0;
 		while (true) {
 			//First checks to see if the roster name exists, then if it doesn't, it makes a new file with that name.
 			std::cout << "<<======= Create/Edit Tribute Roster =======>>" << std::endl;
 			std::cout << "What would you like to name this new tribute roster?" << std::endl;
 			std::cout << ">> ";
-			std::cin.ignore();
+
+			//After the first attempt, it starts ignoring the first letter, however this is needed the first time because otherwise the getline gets skipped.
+			if (attempt == 0) {
+				std::cin.ignore();
+			}
 			getline(std::cin, roster_name);
 
 			bool existing_roster = false;
@@ -170,33 +175,90 @@ void Game::custom_tribute_list() {
 			if (!existing_roster) {
 				std::ofstream outfile("rosters/" + roster_name + ".json");
 				outfile.close();
+				std::cout << "<<==== New Roster ====>>\n" << std::endl;
+				std::cout << "Name: " << roster_name << "\n" << std::endl;
+				for (int i = 0; i < 24; i++) {
+					std::string tributeName;
+					int tributeAge;
+					std::string tributeGender;
+					int tributeHeight;
+					int tributeWeight;
+					if ((i % 2) == 0) {
+						std::cout << "<<= District " << (i / 2) + 1 << " =>>" << std::endl;
+						std::cout << "Tribute 1: " << std::endl;
+						std::cout << "Name: ";
+						getline(std::cin, tributeName);
+						std::cout << "Age: ";
+						std::cin >> tributeAge;
+						std::cin.ignore();
+						std::cout << "Gender: ";
+						getline(std::cin, tributeGender);
+						std::cout << "Height (inches): ";
+						std::cin >> tributeHeight;
+						std::cout << "Weight (pounds): ";
+						std::cin >> tributeWeight;
+						std::cout << std::endl;
+						std::cin.ignore();
+					}
+					else {
+						std::cout << "Tribute 2: " << std::endl;
+						std::cout << "Name: ";
+						getline(std::cin, tributeName);
+						std::cout << "Age: ";
+						std::cin >> tributeAge;
+						std::cin.ignore();
+						std::cout << "Gender: ";
+						getline(std::cin, tributeGender);
+						std::cout << "Height (inches): ";
+						std::cin >> tributeHeight;
+						std::cout << "Weight (pounds): ";
+						std::cin >> tributeWeight;
+						std::cout << std::endl;
+						std::cin.ignore();
+					}
+				}
 				break;
 			}
+			attempt++;
 		}
 	}
 	else if (option == 2) {
 		system("cls");
-		std::cout << "<<=== Rosters ===>>\n" << std::endl;
+		while (true)
+		{
+			std::cout << "<<=== Rosters ===>>\n" << std::endl;
 
-		//Find the existing roster files in the rosters/ directory
-		std::string path = "rosters";
-		std::vector<std::string> roster_list;
-		int roster_num = 1;
-		for (const auto& entry : fs::directory_iterator(path)) {
-			std::string roster_name = entry.path().u8string();
-			//erases first 8 letters, which is the 'rosters/' part of the directory
-			roster_name.erase(0, 8);
-			//erases the final 5 letters, which is the '.json' part of the directory
-			roster_name.erase(roster_name.length()-5, roster_name.length());
-			std::cout << roster_num << ". " << roster_name << std::endl;
-			roster_list.push_back(roster_name);
-			roster_num++;
+			//Find the existing roster files in the rosters/ directory
+			std::string path = "rosters";
+			std::vector<std::string> roster_list;
+			int roster_num = 1;
+			for (const auto& entry : fs::directory_iterator(path)) {
+				std::string roster_name = entry.path().u8string();
+				//erases first 8 letters, which is the 'rosters/' part of the directory
+				roster_name.erase(0, 8);
+				//erases the final 5 letters, which is the '.json' part of the directory
+				roster_name.erase(roster_name.length()-5, roster_name.length());
+				std::cout << roster_num << ". " << roster_name << std::endl;
+				roster_list.push_back(roster_name);
+				roster_num++;
+			}
+			std::cout << "\nWhich roster would you like to edit?" << std::endl;
+			std::cout << ">> ";
+			int roster_choice;
+			std::cin >> roster_choice;
+			std::cout << roster_choice << std::endl;
+			if (roster_choice <= 0 || roster_choice > roster_list.size()) {
+				system("cls");
+				std::cout << "<<=== Roster not found ===>\n" << std::endl;
+			}
+			else {
+				std::cout << roster_list[roster_choice - 1] << std::endl;
+				break;
+			}
+			std::cin.clear();
+			std::cin.ignore(100, '\n');
 		}
-		std::cout << "\nWhich roster would you like to edit?" << std::endl;
-		std::cout << ">> ";
-		int roster_choice;
-		std::cin >> roster_choice;
-		std::cout << roster_list[roster_choice - 1] << std::endl;
+		
 	}
 	else if (option == 3) {
 		invalid_command();
@@ -205,6 +267,7 @@ void Game::custom_tribute_list() {
 
 	}
 }
+
 
 void Game::create_tribute_list() {
 	//generates generic random tribute list and stores it in the tribute list variable. 
