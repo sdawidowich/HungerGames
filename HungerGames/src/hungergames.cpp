@@ -251,6 +251,7 @@ void Game::custom_tribute_list() {
 					};
 				}
 				saveroster << std::setw(4) << roster_json << std::endl;
+				saveroster.close();
 				break;
 			}
 			attempt++;
@@ -278,21 +279,37 @@ void Game::custom_tribute_list() {
 			}
 			std::cout << "\nWhich roster would you like to edit?" << std::endl;
 			std::cout << ">> ";
-			int roster_choice;
+			unsigned int roster_choice;
 			std::cin >> roster_choice;
-			std::cout << roster_choice << std::endl;
+			
 			if (roster_choice <= 0 || roster_choice > roster_list.size()) {
 				system("cls");
 				std::cout << "<<=== Roster not found ===>\n" << std::endl;
 			}
 			else {
-				std::cout << roster_list[roster_choice - 1] << std::endl;
+				system("cls");
+				std::cout << "<<=== Edit Roster ===>>\n" << std::endl;
+				std::cout << "Roster Name: " << roster_list[roster_choice - 1] << "\n" << std::endl;
+				std::ifstream load_roster("rosters/" + roster_list[roster_choice - 1] + ".json");
+				json roster_json;
+				load_roster >> roster_json;
+				std::vector<Tribute> tribute_roster;
+				for (int i = 0; i < 12; i++) {
+					std::string district_key = "District " + std::to_string(i + 1);
+					json district_tributes = roster_json["Tribute List"][district_key];
+					Tribute tribute1(district_tributes["Tribute 1"]["Name"], district_tributes["Tribute 1"]["Gender"], "Alive", i + 1, i + 1, district_tributes["Tribute 1"]["Age"], district_tributes["Tribute 1"]["Height"], district_tributes["Tribute 1"]["Weight"], 0, 100);
+					Tribute tribute2(district_tributes["Tribute 2"]["Name"], district_tributes["Tribute 2"]["Gender"], "Alive", i + 1, i + 1, district_tributes["Tribute 2"]["Age"], district_tributes["Tribute 2"]["Height"], district_tributes["Tribute 2"]["Weight"], 0, 100);
+					tribute_roster.emplace_back(tribute1);
+					tribute_roster.emplace_back(tribute2);
+				}
+				view_tribute_list(tribute_roster);
+				load_roster.close();
+				
 				break;
 			}
 			std::cin.clear();
 			std::cin.ignore(100, '\n');
 		}
-		
 	}
 	else if (option == 3) {
 		invalid_command();
@@ -564,12 +581,16 @@ void Game::create_tribute_list() {
 	
 }
 
-void Game::view_tribute_list() {
-	std::vector<Tribute> tributeList = get_tribute_list();
+void Game::view_tribute_list(std::vector<Tribute> tributeList) {
 	for (int i = 0; i < 12; i++) {
-		std::cout << "District " << tributeList[i].get_district() << std::endl;
-		std::cout << "1. " << tributeList[i].get_name() << " - " << tributeList[i].get_gender() << " - " << tributeList[i].get_age() << " years old" << " - " << inch_to_feet(tributeList[i].get_height()) << " - " << tributeList[i].get_weight() << " lbs." << std::endl;
-		std::cout << "2. " << tributeList[i+12].get_name() << " - " << tributeList[i+12].get_gender() << " - " << tributeList[i].get_age() << " years old" << " - " << inch_to_feet(tributeList[i+12].get_height()) << " - " << tributeList[i].get_weight() << " lbs." << std::endl;
+		std::cout << "District " << i + 1 << std::endl;
+		int tributeFound = 1;
+		for (Tribute tribute : tributeList) {
+			if (tribute.get_district() == (i + 1)) {
+				std::cout << tributeFound << ". " << tribute.get_name() << " - " << tribute.get_gender() << " - " << tribute.get_age() << " years old" << " - " << inch_to_feet(tribute.get_height()) << " - " << tribute.get_weight() << " lbs." << std::endl;
+				tributeFound++;
+			}
+		}
 		std::cout << std::endl;
 	}
 }
@@ -594,7 +615,7 @@ void Game::CreateGame() {
 		}
 		else if (option == 3) {
 			system("cls");
-			view_tribute_list();
+			view_tribute_list(get_tribute_list());
 		}
 		else if (option == 4) {
 			sim_day();

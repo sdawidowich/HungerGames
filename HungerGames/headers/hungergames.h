@@ -23,7 +23,7 @@ public:
 	void start_game();
 	void custom_tribute_list();
 	void create_tribute_list();
-	void view_tribute_list();
+	void view_tribute_list(std::vector<Tribute> tributeList);
 	void CreateGame();
 	void SimTypeOption();
 	void TributeCreationOption();
