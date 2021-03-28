@@ -3,6 +3,10 @@
 #include <fstream>
 #include <filesystem>
 #include "hungergames.h"
+#include <string>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace fs = std::filesystem;
 
@@ -177,6 +181,7 @@ void Game::custom_tribute_list() {
 				outfile.close();
 				std::cout << "<<==== New Roster ====>>\n" << std::endl;
 				std::cout << "Name: " << roster_name << "\n" << std::endl;
+				std::vector<Tribute> custom_tribute_list;
 				for (int i = 0; i < 24; i++) {
 					std::string tributeName;
 					int tributeAge;
@@ -216,7 +221,36 @@ void Game::custom_tribute_list() {
 						std::cout << std::endl;
 						std::cin.ignore();
 					}
+					Tribute new_tribute(tributeName, tributeGender, "Alive", i + 1, (i / 2) + 1, tributeAge, tributeHeight,tributeWeight, 0, 100);
+					custom_tribute_list.emplace_back(new_tribute);
 				}
+				std::ofstream saveroster("rosters/" + roster_name + ".json");
+				json roster_json;
+				roster_json["Roster Name"] = roster_name;
+				for (int i = 0; i < 12; i++) {
+					std::string district_key = "District " + std::to_string(i+1);
+					roster_json["Tribute List"][district_key] = { 
+						{"Tribute 1",
+							{
+							{"Name", custom_tribute_list[2*i].get_name()},
+							{"Gender", custom_tribute_list[2*i].get_gender()},
+							{"Age", custom_tribute_list[2*i].get_age()},
+							{"Height", custom_tribute_list[2*i].get_height()},
+							{"Weight", custom_tribute_list[2*i].get_weight()}
+							}
+						},
+						{"Tribute 2",
+							{
+							{"Name", custom_tribute_list[2*i+1].get_name()},
+							{"Gender", custom_tribute_list[2*i+1].get_gender()},
+							{"Age", custom_tribute_list[2*i+1].get_age()},
+							{"Height", custom_tribute_list[2*i+1].get_height()},
+							{"Weight", custom_tribute_list[2*i+1].get_weight()}
+							}
+						} 
+					};
+				}
+				saveroster << std::setw(4) << roster_json << std::endl;
 				break;
 			}
 			attempt++;
@@ -267,7 +301,6 @@ void Game::custom_tribute_list() {
 
 	}
 }
-
 
 void Game::create_tribute_list() {
 	//generates generic random tribute list and stores it in the tribute list variable. 
