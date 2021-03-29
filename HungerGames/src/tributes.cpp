@@ -57,8 +57,28 @@ int Tribute::get_health() {
 	return Tribute::health;
 }
 
+void Tribute::set_name(std::string new_name) {
+	Tribute::name = new_name;
+}
+
+void Tribute::set_gender(std::string new_gender) {
+	Tribute::gender = new_gender;
+}
+
 void Tribute::set_status(std::string new_status) {
 	Tribute::status = new_status;
+}
+
+void Tribute::set_age(int new_age) {
+	Tribute::age = new_age;
+}
+
+void Tribute::set_height(int new_height) {
+	Tribute::height = new_height;
+}
+
+void Tribute::set_weight(int new_weight) {
+	Tribute::weight = new_weight;
 }
 
 void Tribute::set_kills(int new_kills) {

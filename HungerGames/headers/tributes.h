@@ -20,7 +20,12 @@ public:
 	int get_weight();
 	int get_kills();
 	int get_health();
+	void set_name(std::string new_name);
+	void set_gender(std::string new_gender);
 	void set_status(std::string new_status);
+	void set_age(int new_age);
+	void set_height(int new_height);
+	void set_weight(int new_weight);
 	void set_kills(int new_kills);
 	void set_health(int new_health);
 };
