@@ -1,5 +1,5 @@
 #include <iostream>
-#include "hungergames.h"
+#include "menus.h"
 
 int main() {
 	Game game;

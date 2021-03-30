@@ -18,20 +18,17 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\hungergames.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\tributes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\menus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="headers\hungergames.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\tributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -41,8 +38,15 @@
     <ClInclude Include="headers\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\menus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="rosters\Test 12312313.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="name_lists\boynames.txt" />
+    <Text Include="name_lists\girlnames.txt" />
   </ItemGroup>
 </Project>

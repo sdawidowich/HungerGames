@@ -21,6 +21,9 @@ public:
 	void set_day(int new_day);
 	void set_events();
 	void start_game();
+	void SaveRoster(std::string& roster_name, std::vector<Tribute>& custom_tribute_list);
+	void CustomRosterList(std::string& path, std::vector<std::string>& roster_list);
+	void LoadCustomRoster(std::string& roster_name, std::vector<Tribute>& tribute_roster);
 	void custom_tribute_list();
 	void create_tribute_list();
 	void view_tribute_list(std::vector<Tribute> tributeList);

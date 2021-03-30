@@ -2,7 +2,7 @@
 #include <random>
 #include <fstream>
 #include <filesystem>
-#include "hungergames.h"
+#include "menus.h"
 #include <string>
 #include "json.hpp"
 
@@ -135,6 +135,66 @@ void Game::start_game() {
 	}
 }
 
+void Game::SaveRoster(std::string& roster_name, std::vector<Tribute>& custom_tribute_list) {
+	std::ofstream saveroster("rosters/" + roster_name + ".json");
+	json roster_json;
+	roster_json["Roster Name"] = roster_name;
+	for (int i = 0; i < 12; i++) {
+		std::string district_key = "District " + std::to_string(i + 1);
+		roster_json["Tribute List"][district_key] = {
+			{ "Tribute 1",
+			{
+				{ "Name", custom_tribute_list[2 * i].get_name() },
+				{ "Gender", custom_tribute_list[2 * i].get_gender() },
+				{ "Age", custom_tribute_list[2 * i].get_age() },
+				{ "Height", custom_tribute_list[2 * i].get_height() },
+				{ "Weight", custom_tribute_list[2 * i].get_weight() }
+			}
+			},
+			{ "Tribute 2",
+			{
+				{ "Name", custom_tribute_list[2 * i + 1].get_name() },
+				{ "Gender", custom_tribute_list[2 * i + 1].get_gender() },
+				{ "Age", custom_tribute_list[2 * i + 1].get_age() },
+				{ "Height", custom_tribute_list[2 * i + 1].get_height() },
+				{ "Weight", custom_tribute_list[2 * i + 1].get_weight() }
+			}
+			}
+		};
+	}
+	saveroster << std::setw(4) << roster_json << std::endl;
+	saveroster.close();
+}
+
+void Game::CustomRosterList(std::string& path, std::vector<std::string>& roster_list) {
+	int roster_num = 1;
+	for (const auto& entry : fs::directory_iterator(path)) {
+		std::string roster_name = entry.path().u8string();
+		//erases first 8 letters, which is the 'rosters/' part of the directory
+		roster_name.erase(0, 8);
+		//erases the final 5 letters, which is the '.json' part of the directory
+		roster_name.erase(roster_name.length() - 5, roster_name.length());
+		std::cout << roster_num << ". " << roster_name << std::endl;
+		roster_list.push_back(roster_name);
+		roster_num++;
+	}
+}
+
+void Game::LoadCustomRoster(std::string& roster_name, std::vector<Tribute>& tribute_roster) {
+	std::ifstream load_roster("rosters/" + roster_name + ".json");
+	json roster_json;
+	load_roster >> roster_json;
+	for (int i = 0; i < 12; i++) {
+		std::string district_key = "District " + std::to_string(i + 1);
+		json district_tributes = roster_json["Tribute List"][district_key];
+		Tribute tribute1(district_tributes["Tribute 1"]["Name"], district_tributes["Tribute 1"]["Gender"], "Alive", (2 * i) + 1, i + 1, district_tributes["Tribute 1"]["Age"], district_tributes["Tribute 1"]["Height"], district_tributes["Tribute 1"]["Weight"], 0, 100);
+		Tribute tribute2(district_tributes["Tribute 2"]["Name"], district_tributes["Tribute 2"]["Gender"], "Alive", (2 * i) + 2, i + 1, district_tributes["Tribute 2"]["Age"], district_tributes["Tribute 2"]["Height"], district_tributes["Tribute 2"]["Weight"], 0, 100);
+		tribute_roster.emplace_back(tribute1);
+		tribute_roster.emplace_back(tribute2);
+	}
+	load_roster.close();
+}
+
 void Game::custom_tribute_list() {
 	while (true)
 	{
@@ -225,34 +285,7 @@ void Game::custom_tribute_list() {
 						Tribute new_tribute(tributeName, tributeGender, "Alive", i + 1, (i / 2) + 1, tributeAge, tributeHeight,tributeWeight, 0, 100);
 						custom_tribute_list.emplace_back(new_tribute);
 					}
-					std::ofstream saveroster("rosters/" + roster_name + ".json");
-					json roster_json;
-					roster_json["Roster Name"] = roster_name;
-					for (int i = 0; i < 12; i++) {
-						std::string district_key = "District " + std::to_string(i+1);
-						roster_json["Tribute List"][district_key] = { 
-							{"Tribute 1",
-								{
-								{"Name", custom_tribute_list[2*i].get_name()},
-								{"Gender", custom_tribute_list[2*i].get_gender()},
-								{"Age", custom_tribute_list[2*i].get_age()},
-								{"Height", custom_tribute_list[2*i].get_height()},
-								{"Weight", custom_tribute_list[2*i].get_weight()}
-								}
-							},
-							{"Tribute 2",
-								{
-								{"Name", custom_tribute_list[2*i+1].get_name()},
-								{"Gender", custom_tribute_list[2*i+1].get_gender()},
-								{"Age", custom_tribute_list[2*i+1].get_age()},
-								{"Height", custom_tribute_list[2*i+1].get_height()},
-								{"Weight", custom_tribute_list[2*i+1].get_weight()}
-								}
-							} 
-						};
-					}
-					saveroster << std::setw(4) << roster_json << std::endl;
-					saveroster.close();
+					SaveRoster(roster_name, custom_tribute_list);
 					break;
 				}
 				attempt++;
@@ -267,17 +300,7 @@ void Game::custom_tribute_list() {
 				//Find the existing roster files in the rosters/ directory
 				std::string path = "rosters";
 				std::vector<std::string> roster_list;
-				int roster_num = 1;
-				for (const auto& entry : fs::directory_iterator(path)) {
-					std::string roster_name = entry.path().u8string();
-					//erases first 8 letters, which is the 'rosters/' part of the directory
-					roster_name.erase(0, 8);
-					//erases the final 5 letters, which is the '.json' part of the directory
-					roster_name.erase(roster_name.length()-5, roster_name.length());
-					std::cout << roster_num << ". " << roster_name << std::endl;
-					roster_list.push_back(roster_name);
-					roster_num++;
-				}
+				CustomRosterList(path, roster_list);
 				std::cout << "\nWhich roster would you like to edit? Or type 0 to cancel.\n" << std::endl;
 				std::cout << ">> ";
 				int roster_choice;
@@ -295,21 +318,11 @@ void Game::custom_tribute_list() {
 					while (true) {
 						system("cls");
 						std::cout << "<<=== Edit Roster ===>>\n" << std::endl;
-						std::cout << "Roster Name: " << roster_list[roster_choice - 1] << "\n" << std::endl;
-						std::ifstream load_roster("rosters/" + roster_list[roster_choice - 1] + ".json");
-						json roster_json;
-						load_roster >> roster_json;
+						std::string roster_name = roster_list[roster_choice - 1];
+						std::cout << "Roster Name: " << roster_name << "\n" << std::endl;
 						std::vector<Tribute> tribute_roster;
-						for (int i = 0; i < 12; i++) {
-							std::string district_key = "District " + std::to_string(i + 1);
-							json district_tributes = roster_json["Tribute List"][district_key];
-							Tribute tribute1(district_tributes["Tribute 1"]["Name"], district_tributes["Tribute 1"]["Gender"], "Alive", (2*i) + 1, i + 1, district_tributes["Tribute 1"]["Age"], district_tributes["Tribute 1"]["Height"], district_tributes["Tribute 1"]["Weight"], 0, 100);
-							Tribute tribute2(district_tributes["Tribute 2"]["Name"], district_tributes["Tribute 2"]["Gender"], "Alive", (2*i) + 2, i + 1, district_tributes["Tribute 2"]["Age"], district_tributes["Tribute 2"]["Height"], district_tributes["Tribute 2"]["Weight"], 0, 100);
-							tribute_roster.emplace_back(tribute1);
-							tribute_roster.emplace_back(tribute2);
-						}
+						LoadCustomRoster(roster_name, tribute_roster);
 						view_tribute_list(tribute_roster);
-						load_roster.close();
 						std::cout << "Which district would you like to edit? Or type 0 to go back.\n" << std::endl;
 						std::cout << ">> ";
 						int district_choice;
@@ -377,35 +390,8 @@ void Game::custom_tribute_list() {
 											std::cin >> new_weight;
 											tribute_roster[index].set_weight(new_weight);
 										}
-										std::ofstream saveroster("rosters/" + roster_list[roster_choice - 1] + ".json");
-										json roster_json;
-										roster_json["Roster Name"] = roster_list[roster_choice - 1];
-										std::string district_key = "District " + std::to_string(district_choice);
-										for (int i = 0; i < 12; i++) {
-											std::string district_key = "District " + std::to_string(i + 1);
-											roster_json["Tribute List"][district_key] = {
-												{"Tribute 1",
-													{
-													{"Name", tribute_roster[2 * i].get_name()},
-													{"Gender", tribute_roster[2 * i].get_gender()},
-													{"Age", tribute_roster[2 * i].get_age()},
-													{"Height", tribute_roster[2 * i].get_height()},
-													{"Weight", tribute_roster[2 * i].get_weight()}
-													}
-												},
-												{"Tribute 2",
-													{
-													{"Name", tribute_roster[2 * i + 1].get_name()},
-													{"Gender", tribute_roster[2 * i + 1].get_gender()},
-													{"Age", tribute_roster[2 * i + 1].get_age()},
-													{"Height", tribute_roster[2 * i + 1].get_height()},
-													{"Weight", tribute_roster[2 * i + 1].get_weight()}
-													}
-												}
-											};
-										}
-										saveroster << std::setw(4) << roster_json << std::endl;
-										saveroster.close();
+										SaveRoster(roster_list[roster_choice - 1], tribute_roster);
+										
 										system("cls");
 										std::cout << "<<=== Saved Tribute Data Successfully ===>>\n" << std::endl;
 									}
@@ -433,11 +419,98 @@ void Game::custom_tribute_list() {
 	}
 }
 
+int countLines(std::ifstream& filename)
+{
+	std::string line;
+	int numLines = 0;
+	while (getline(filename, line))
+	{
+		numLines++;
+	}
+	filename.clear();
+	filename.seekg(0);
+	return numLines;
+}
+
+void randomNames(std::vector<std::string>& boysNamesVector, std::vector<std::string>& girlsNamesVector) {
+	std::ifstream boynames("name_lists/boynames.txt");
+	int boyNamesSize = countLines(boynames);
+	std::ifstream girlnames("name_lists/girlnames.txt");
+	int girlNamesSize = countLines(girlnames);
+
+	std::random_device rd; // obtain a random number from hardware
+	std::mt19937 gen(rd()); // seed the generator
+	std::uniform_int_distribution<> boys(1, boyNamesSize); // define the range
+	std::uniform_int_distribution<> girls(1, girlNamesSize); // define the range
+
+	std::vector<int> boysNamesLines;
+	std::vector<int> girlsNamesLines;
+
+	for (int i = 0; i < 12; i++)
+	{
+		int boyNameLine = boys(gen);
+		bool differentLine = false;
+		while (!differentLine)
+		{
+			if (std::find(boysNamesLines.begin(), boysNamesLines.end(), boyNameLine) != boysNamesLines.end())
+			{
+				boyNameLine = boys(gen);
+			}
+			else
+			{
+				differentLine = true;
+			}
+		}
+		boysNamesLines.emplace_back(boyNameLine);
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		int girlNameLine = girls(gen);
+		bool differentLine = false;
+		while (!differentLine)
+		{
+			if (std::find(girlsNamesLines.begin(), girlsNamesLines.end(), girlNameLine) != girlsNamesLines.end())
+			{
+				girlNameLine = girls(gen);
+			}
+			else
+			{
+				differentLine = true;
+			}
+		}
+		girlsNamesLines.emplace_back(girlNameLine);
+	}
+	
+	std::string name;
+	int i = 0;
+	while (getline(boynames, name))
+	{
+		i++;
+		if (std::find(boysNamesLines.begin(), boysNamesLines.end(), i) != boysNamesLines.end())
+		{
+			boysNamesVector.emplace_back(name);
+		}
+	}
+
+	i = 0;
+	while (getline(girlnames, name))
+	{
+		i++;
+		if (std::find(girlsNamesLines.begin(), girlsNamesLines.end(), i) != girlsNamesLines.end())
+		{
+			girlsNamesVector.emplace_back(name);
+		}
+	}
+}
+
 void Game::create_tribute_list() {
 	//generates generic random tribute list and stores it in the tribute list variable. 
 	//The first for loop generates 12 boys, 1 for each district and 12 girls, 1 for each district. The ages, heights, and weights are random. 
 	if (Game::option_tribute_list == "Realistic Random") {
-		
+		std::vector<std::string> boysNamesVector;
+		std::vector<std::string> girlsNamesVector;
+		randomNames(boysNamesVector, girlsNamesVector);
+
 		int ages[28] = {
 				12,
 				13, 13,
@@ -559,10 +632,10 @@ void Game::create_tribute_list() {
 				weight = randNum(150, 230);
 			}
 			else {
-				weight = randNum(160, 250);
+				weight = randNum(170, 250);
 			}
 
-			Tribute tribute("Henry Mitkins", "Male", "Alive", i + 1, i + 1, age, height, weight, 0, 100);
+			Tribute tribute(boysNamesVector[i], "Male", "Alive", i + 1, i + 1, age, height, weight, 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 		for (int i = 0; i < 12; i++) {
@@ -667,28 +740,34 @@ void Game::create_tribute_list() {
 			else {
 				weight = randNum(160, 225);
 			}
-			Tribute tribute("Rose Merryweather", "Female", "Alive", i + 13, i + 1, age, height, weight, 0, 100);
+			Tribute tribute(girlsNamesVector[i], "Female", "Alive", i + 13, i + 1, age, height, weight, 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 	}
 	else if (Game::option_tribute_list == "Chaotic Random") {
+		std::vector<std::string> boysNamesVector; 
+		std::vector<std::string> girlsNamesVector;
+		randomNames(boysNamesVector, girlsNamesVector);
 		//Completely random ages, height, weight. Not realistic at all.
 		for (int i = 0; i < 12; i++) {
-			Tribute tribute("Henry Mitkins", "Male", "Alive", i + 1, i + 1, randNum(12, 18), randNum(60, 77), randNum(100, 250), 0, 100);
+			Tribute tribute(boysNamesVector[i], "Male", "Alive", i + 1, i + 1, randNum(12, 18), randNum(60, 77), randNum(100, 250), 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 		for (int i = 0; i < 12; i++) {
-			Tribute tribute("Rose Merryweather", "Female", "Alive", i + 13, i + 1, randNum(12, 18), randNum(56, 72), randNum(80, 200), 0, 100);
+			Tribute tribute(girlsNamesVector[i], "Female", "Alive", i + 13, i + 1, randNum(12, 18), randNum(56, 72), randNum(80, 200), 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 	}
 	else {
+		std::vector<std::string> boysNamesVector;
+		std::vector<std::string> girlsNamesVector;
+		randomNames(boysNamesVector, girlsNamesVector);
 		for (int i = 0; i < 12; i++) {
-			Tribute tribute("Henry Mitkins", "Male", "Alive", i + 1, i + 1, randNum(12, 18), randNum(60, 77), randNum(100, 250), 0, 100);
+			Tribute tribute(boysNamesVector[i], "Male", "Alive", i + 1, i + 1, randNum(12, 18), randNum(60, 77), randNum(100, 250), 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 		for (int i = 0; i < 12; i++) {
-			Tribute tribute("Rose Merryweather", "Female", "Alive", i + 13, i + 1, randNum(12, 18), randNum(56, 72), randNum(80, 200), 0, 100);
+			Tribute tribute(girlsNamesVector[i], "Female", "Alive", i + 13, i + 1, randNum(12, 18), randNum(56, 72), randNum(80, 200), 0, 100);
 			Game::tribute_list.emplace_back(tribute);
 		}
 	}
@@ -779,24 +858,36 @@ void Game::TributeCreationOption() {
 	std::cout << "<<== Tribute List Creation ==>>\n1. Realistic Random | 2. Chaotic Random | 3. Custom\n" << std::endl;
 	std::cout << ">> ";
 	int option_edit;
+	std::vector<std::string> roster_list;
+	std::vector<Tribute> tribute_roster;
+	std::string path = "rosters";
 	std::cin >> option_edit;
 	switch (option_edit) {
 	case 1:
-		system("cls");
 		Game::option_tribute_list = "Realistic Random";
+		Game::tribute_list.clear();
+		create_tribute_list();
+		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Realistic Random ==>>\n" << std::endl;
 		break;
 	case 2:
-		system("cls");
 		Game::option_tribute_list = "Chaotic Random";
+		Game::tribute_list.clear();
+		create_tribute_list();
+		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Chaotic Random ==>>\n" << std::endl;
 		break;
 	case 3:
-		std::cout << "Select the Tribute Roster you would like to use." << std::endl;
-		int roster_selection;
-		std::cin >> roster_selection;
-		system("cls");
 		Game::option_tribute_list = "Custom";
+		std::cout << "\nWhich Tribute Roster you would like to use?\n" << std::endl;
+		CustomRosterList(path, roster_list);
+		std::cout << "\n>> ";
+		int roster_selection;
+		std::cin >> roster_selection; 
+		LoadCustomRoster(roster_list[roster_selection-1], tribute_roster);
+		Game::tribute_list.clear();
+		Game::tribute_list = tribute_roster;
+		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Custom ==>>\n" << std::endl;
 		break;
 	default:
