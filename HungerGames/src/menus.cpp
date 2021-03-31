@@ -23,18 +23,18 @@ void invalid_command() {
 
 //Menu constructer, basically starts the program.
 Menus::Menus() {
-	HungerGames simulation;
+	HungerGames game;
 	//Create generic random tribute list and stores it in the tribute list variable. 
-	simulation.create_tribute_list();
+	game.create_tribute_list();
 	//Creates list of events
-	simulation.set_events();
+	game.set_events();
 	//Calls the start_game function.
-	start_game(simulation);
+	start_game(game);
 }
 
 
 //Displays a text menu and gets user command input
-void Menus::start_game(HungerGames& simulation) {
+void Menus::start_game(HungerGames& game) {
 	while (true) {
 		int command;
 		std::cout << "<<========== Menu ==========>>\n" << std::endl;
@@ -43,7 +43,7 @@ void Menus::start_game(HungerGames& simulation) {
 		std::cin >> command;
 		system("cls");
 		if (command == 1) {
-			CreateGame(simulation);
+			CreateGame(game);
 		}
 		else if (command == 2) {
 			custom_tribute_list();
@@ -362,39 +362,38 @@ void Menus::view_tribute_list(std::vector<Tribute> tributeList) {
 }
 
 //Create game menu, called when the user selects "create game" in the above start_game function. Allows the user to change game options.
-void Menus::CreateGame(HungerGames& simulation) {
+void Menus::CreateGame(HungerGames& game) {
 	while (true) {
 		std::cout << "<<======= Create Game =======>>\n" << std::endl;
 		std::cout << "<<== Game Options ==>>" << std::endl;
-		std::cout << "1. Tribute List Creation = " << simulation.get_option_tribute_list() << "\n2. Simulation Type = " << simulation.get_option_sim_type() << "\n3. View Tribute List\n4. Continue\n5. Cancel" << std::endl;
+		std::cout << "1. Tribute List Creation = " << game.get_option_tribute_list() << "\n2. Simulation Type = " << game.get_option_sim_type() << "\n3. View Tribute List\n4. Continue\n5. Cancel" << std::endl;
 		std::cout << "Type the option number you would like to edit or enter 4 to continue." << std::endl;
 		std::cout << "\n>> ";
 		int option;
 		std::cin >> option;
 		if (option == 1) {
 			system("cls");
-			TributeCreationOption(simulation);
+			TributeCreationOption(game);
 		}
 		else if (option == 2) {
 			system("cls");
-			SimTypeOption(simulation);
+			SimTypeOption(game);
 		}
 		else if (option == 3) {
 			system("cls");
 			std::cout << "<<=== Current Roster ===>>\n" << std::endl;
-			view_tribute_list(simulation.get_tribute_list());
+			view_tribute_list(game.get_tribute_list());
 		}
 		else if (option == 4) {
-			HungerGames game;
 			system("cls");
 			std::cout << "Welcome to the Hunger Games! May the odds be ever in your favor." << std::endl;
-			if (simulation.get_option_sim_type() == "Realistic") {
+			if (game.get_option_sim_type() == "Realistic") {
 				game.realistic_sim();
 			}
-			else if (simulation.get_option_sim_type() == "Random") {
+			else if (game.get_option_sim_type() == "Random") {
 				game.random_sim();
 			}
-			else if (simulation.get_option_sim_type() == "Chaotic Random") {
+			else if (game.get_option_sim_type() == "Chaotic Random") {
 				game.chaotic_random_sim();
 			}
 			break;
@@ -410,7 +409,7 @@ void Menus::CreateGame(HungerGames& simulation) {
 }
 
 //Called when the user selects to edit the sim type option
-void Menus::SimTypeOption(HungerGames& simulation) {
+void Menus::SimTypeOption(HungerGames& game) {
 	std::cout << "<<== Simulation Type ==>>\n1. Realistic | 2. Random | 3. Chaotic Random\n" << std::endl;
 	std::cout << ">> ";
 	int option_edit;
@@ -418,17 +417,17 @@ void Menus::SimTypeOption(HungerGames& simulation) {
 	switch (option_edit) {
 	case 1:
 		system("cls");
-		simulation.set_option_sim_type("Realistic");
+		game.set_option_sim_type("Realistic");
 		std::cout << "<<== Set Simulation Type to Realistic ==>>\n" << std::endl;
 		break;
 	case 2:
 		system("cls");
-		simulation.set_option_sim_type("Random");
+		game.set_option_sim_type("Random");
 		std::cout << "<<== Set Simulation Type to Random ==>>\n" << std::endl;
 		break;
 	case 3:
 		system("cls");
-		simulation.set_option_sim_type("Chaotic Random");
+		game.set_option_sim_type("Chaotic Random");
 		std::cout << "<<== Set Simulation Type to Chaotic Random ==>>\n" << std::endl;
 		break;
 	default:
@@ -438,7 +437,7 @@ void Menus::SimTypeOption(HungerGames& simulation) {
 }
 
 //Called when the user selects to edit the tribute list creation. 
-void Menus::TributeCreationOption(HungerGames& simulation) {
+void Menus::TributeCreationOption(HungerGames& game) {
 	std::cout << "<<== Tribute List Creation ==>>\n1. Realistic Random | 2. Chaotic Random | 3. Custom\n" << std::endl;
 	std::cout << ">> ";
 	int option_edit;
@@ -448,29 +447,29 @@ void Menus::TributeCreationOption(HungerGames& simulation) {
 	std::cin >> option_edit;
 	switch (option_edit) {
 	case 1:
-		simulation.set_option_tribute_list("Realistic Random");
-		simulation.reset_tribute_list();
-		simulation.create_tribute_list();
+		game.set_option_tribute_list("Realistic Random");
+		game.reset_tribute_list();
+		game.create_tribute_list();
 		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Realistic Random ==>>\n" << std::endl;
 		break;
 	case 2:
-		simulation.set_option_tribute_list("Chaotic Random");
-		simulation.reset_tribute_list();
-		simulation.create_tribute_list();
+		game.set_option_tribute_list("Chaotic Random");
+		game.reset_tribute_list();
+		game.create_tribute_list();
 		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Chaotic Random ==>>\n" << std::endl;
 		break;
 	case 3:
-		simulation.set_option_tribute_list("Custom");
+		game.set_option_tribute_list("Custom");
 		std::cout << "\nWhich Tribute Roster you would like to use?\n" << std::endl;
 		CustomRosterList(path, roster_list);
 		std::cout << "\n>> ";
 		int roster_selection;
 		std::cin >> roster_selection; 
 		LoadCustomRoster(roster_list[roster_selection-1], tribute_roster);
-		simulation.reset_tribute_list();
-		simulation.set_tribute_list(tribute_roster);
+		game.reset_tribute_list();
+		game.set_tribute_list(tribute_roster);
 		system("cls");
 		std::cout << "<<== Set Tribute List Creation to Custom ==>>\n" << std::endl;
 		break;

@@ -13,6 +13,8 @@ private:
 public:
 	HungerGames();
 	void realistic_sim();
+	void AmendEventStatement(std::string& event_statement, Tribute& tribute1, std::string key);
+	void ProcessEvent(int event_index, std::vector<Tribute>& unused_tributes, std::vector<Tribute>& alive_tributes);
 	void random_sim();
 	void chaotic_random_sim();
 	std::vector<Tribute> get_tribute_list();
@@ -35,4 +37,5 @@ public:
 	void randomNames(std::vector<std::string>& boysNamesVector, std::vector<std::string>& girlsNamesVector);
 	void create_tribute_list();
 	void reset_tribute_list();
+	int get_alive_tributes(std::vector<Tribute>& tribute_list);
 };
