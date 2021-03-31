@@ -158,12 +158,15 @@
     <ClCompile Include="src\event.cpp" />
     <ClCompile Include="src\menus.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\hungergames.cpp" />
+    <ClCompile Include="src\simulation.cpp" />
     <ClCompile Include="src\tributes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\event.h" />
     <ClInclude Include="headers\menus.h" />
     <ClInclude Include="headers\json.hpp" />
+    <ClInclude Include="headers\hungergames.h" />
     <ClInclude Include="headers\tributes.h" />
   </ItemGroup>
   <ItemGroup>

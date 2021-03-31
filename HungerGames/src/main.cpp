@@ -2,7 +2,7 @@
 #include "menus.h"
 
 int main() {
-	Game game;
+	Menus program;
 
 	return 0;
 }
