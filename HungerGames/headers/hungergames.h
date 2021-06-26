@@ -14,9 +14,8 @@ public:
 	HungerGames();
 	void realistic_sim();
 	void AmendEventStatement(std::string& event_statement, Tribute& tribute1, std::string key);
-	void ProcessEvent(int event_index, std::vector<Tribute>& unused_tributes, std::vector<Tribute>& alive_tributes);
+	void ProcessEvent(int event_index, std::vector<Tribute>& unused_tributes, std::vector<Tribute>& alive_tributes, const char* sim_type);
 	void random_sim();
-	void chaotic_random_sim();
 	std::vector<Tribute> get_tribute_list();
 	std::vector<Tribute> get_alliance_list();
 	int get_time();

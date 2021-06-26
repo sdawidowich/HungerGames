@@ -50,96 +50,96 @@ void HungerGames::set_day(int new_day) {
 //Creates list of possible events
 void HungerGames::set_events() {
 	std::vector<std::string> dead_tributes = {};
-	Event event(1, "Alive", "{Tribute1} ran to the cornucopia and grabbed a bow and arrow.", "Cornucopia", dead_tributes);
+	Event event(1, "Alive", "[|] {Tribute1} ran to the cornucopia and grabbed a bow and arrow.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = { "Tribute1" };
-	event.change_event(1, "Death", "{Tribute1} stepped off the pedestal too early.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Death", "[-] {Tribute1} stepped off the pedestal too early.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = {};
-	event.change_event(1, "Alive", "{Tribute1} found a spear in the cornucopia.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} found a spear in the cornucopia.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} fled into the woods.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} fled into the woods.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} ran to the cornucopia and grabbed a sword.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} ran to the cornucopia and grabbed a sword.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} found a pack full of knives in the cornucopia.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} found a pack full of knives in the cornucopia.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} ran to the cornucopia and found some camping gear.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} ran to the cornucopia and found some camping gear.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = { "Tribute1" };
-	event.change_event(2, "Death", "{Tribute1} got stabbed by {Tribute2} and died.", "Cornucopia", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute1} got stabbed by {Tribute2} and died.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute2} slashed {Tribute1}'s leg and {Tribute1} bled to death.", "Cornucopia", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute2} slashed {Tribute1}'s leg and {Tribute1} bled to death.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute2} corned {Tribute1} in the cornucopia and bashed them in the head with a spear, killing them.", "Cornucopia", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute2} corned {Tribute1} in the cornucopia and bashed them in the head with a spear, killing them.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = {};
-	event.change_event(1, "Alive", "{Tribute1} grabbed a backpack full of supplies.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} grabbed a backpack full of supplies.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} narrowly avoided a bow shot.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} narrowly avoided a bow shot.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} ran away from the cornucopia.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} ran away from the cornucopia.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = { "Tribute1" };
-	event.change_event(1, "Death", "{Tribute1} blew up.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Death", "[-] {Tribute1} blew up.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute1} was beaten to death by {Tribute2}.", "Cornucopia", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute1} was beaten to death by {Tribute2}.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = {};
-	event.change_event(1, "Alive", "{Tribute1} found a sword at the cornucopia.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} found a sword at the cornucopia.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} found a backpack full of food.", "Cornucopia", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} found a backpack full of food.", "Cornucopia", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = { "Tribute1" };
-	event.change_event(2, "Death", "{Tribute1} was shot with arrow by {Tribute2}.", "Normal", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute1} was shot with arrow by {Tribute2}.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute1} and {Tribute2} got into a sword fight, eventually {Tribute2} won and killed {Tribute1}.", "Normal", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute1} and {Tribute2} got into a sword fight, eventually {Tribute2} won and killed {Tribute1}.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute2} snuck up behind {Tribute1} and slit their throat.", "Normal", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute2} snuck up behind {Tribute1} and slit their throat.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 	
-	event.change_event(2, "Death", "{Tribute2} betrayed {Tribute1} and killed them in their sleep.", "Normal", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute2} betrayed {Tribute1} and killed them in their sleep.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Death", "{Tribute1} was shot with arrow by {Tribute2}", "Normal", dead_tributes);
+	event.change_event(2, "Death", "[-] {Tribute1} was shot with arrow by {Tribute2}", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
 	dead_tributes = {};
-	event.change_event(1, "Alive", "{Tribute1} found a pond with clean drinking water.", "Normal", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} found a pond with clean drinking water.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Alive", "{Tribute1} climbed a tree to escape {Tribute2}.", "Normal", dead_tributes);
+	event.change_event(2, "Alive", "[|] {Tribute1} climbed a tree to escape {Tribute2}.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} collected raspberries from a bush.", "Normal", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} collected raspberries from a bush.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} hunted.", "Normal", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} hunted.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(2, "Alive", "{Tribute1} spied on {Tribute2}.", "Normal", dead_tributes);
+	event.change_event(2, "Alive", "[|] {Tribute1} spied on {Tribute2}.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 
-	event.change_event(1, "Alive", "{Tribute1} fell off a small cliff and injured their ankle.", "Normal", dead_tributes);
+	event.change_event(1, "Alive", "[|] {Tribute1} fell off a small cliff and injured their ankle.", "Normal", dead_tributes);
 	HungerGames::event_list.emplace_back(event);
 }
 

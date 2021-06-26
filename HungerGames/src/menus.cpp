@@ -393,9 +393,6 @@ void Menus::CreateGame(HungerGames& game) {
 			else if (game.get_option_sim_type() == "Random") {
 				game.random_sim();
 			}
-			else if (game.get_option_sim_type() == "Chaotic Random") {
-				game.chaotic_random_sim();
-			}
 			break;
 		}
 		else if (option == 5) {
@@ -410,7 +407,7 @@ void Menus::CreateGame(HungerGames& game) {
 
 //Called when the user selects to edit the sim type option
 void Menus::SimTypeOption(HungerGames& game) {
-	std::cout << "<<== Simulation Type ==>>\n1. Realistic | 2. Random | 3. Chaotic Random\n" << std::endl;
+	std::cout << "<<== Simulation Type ==>>\n1. Realistic | 2. Random\n" << std::endl;
 	std::cout << ">> ";
 	int option_edit;
 	std::cin >> option_edit;
@@ -424,11 +421,6 @@ void Menus::SimTypeOption(HungerGames& game) {
 		system("cls");
 		game.set_option_sim_type("Random");
 		std::cout << "<<== Set Simulation Type to Random ==>>\n" << std::endl;
-		break;
-	case 3:
-		system("cls");
-		game.set_option_sim_type("Chaotic Random");
-		std::cout << "<<== Set Simulation Type to Chaotic Random ==>>\n" << std::endl;
 		break;
 	default:
 		invalid_command();
